@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 //import sia.tacocloud.*;
 import sia.tacocloud.Ingredient.Type;
 import sia.tacocloud.data.IngredientRepository;
+import sia.tacocloud.data.TacoRepository;
 
 @Slf4j
 @Controller
@@ -28,10 +29,22 @@ import sia.tacocloud.data.IngredientRepository;
 @SessionAttributes("order")
 public class DesignTacoController {
 	private final IngredientRepository ingredientRepo;
+	private TacoRepository designRepo;
 
 	@Autowired
-	public DesignTacoController(IngredientRepository ingredientRepo) {
+	public DesignTacoController(IngredientRepository ingredientRepo, TacoRepository designRepo) {
 		this.ingredientRepo = ingredientRepo;
+		this.designRepo = designRepo;
+	}
+
+	@ModelAttribute(name = "order")
+	public Order order() {
+		return new Order();
+	}
+
+	@ModelAttribute(name = "design")
+	public Taco taco() {
+		return new Taco();
 	}
 
 	@GetMapping
@@ -43,16 +56,17 @@ public class DesignTacoController {
 		for (Type type : types) {
 			model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
 		}
-		model.addAttribute("design", new Taco());
+
 		return "design";
 	}
 
 	@PostMapping
-	public String processDesign(@Valid @ModelAttribute("design") Taco design, Errors errors, Model model) {
+	public String processDesign(@Valid Taco design, Errors errors, @ModelAttribute Order order, Model model) {
+
 		if (errors.hasErrors()) {
-			System.out.println(errors.getFieldErrors());
 			List<Ingredient> ingredients = new ArrayList<>();
 			ingredientRepo.findAll().forEach(i -> ingredients.add(i));
+
 			Type[] types = Ingredient.Type.values();
 			for (Type type : types) {
 				model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
@@ -60,15 +74,13 @@ public class DesignTacoController {
 			return "design";
 		}
 
-		// Save the taco design...
-		// We'll do this in chapter 3
-		log.info("Processing design: " + design);
+		Taco saved = designRepo.save(design);
+		order.addDesign(saved);
+
 		return "redirect:/orders/current";
 	}
 
 	private List<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {
-
 		return ingredients.stream().filter(x -> x.getType().equals(type)).collect(Collectors.toList());
-
 	}
 }
