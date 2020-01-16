@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +30,7 @@ public class Order implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
+	@Column(name="placed_at")
 	private Date placedAt;
 
 	@NotBlank(message = "Name is required")
@@ -46,12 +48,15 @@ public class Order implements Serializable {
 	@NotBlank(message = "Zip code is required")
 	private String zip;
 
+	@Column(name="cc_number")
 	@CreditCardNumber(message = "Not a valid card number")
 	private String ccNumber;
 
+	@Column(name="cc_expiration")
 	@Pattern(regexp = "^(0[1-9]|1[0-2])([\\/])([1-9][0-9])$", message = "Must be formatted MM/YY")
 	private String ccExpiration;
 
+	@Column(name="cc_cvv")
 	@Digits(integer = 3, fraction = 0, message = "Invalid CVV")
 	private String ccCVV;
 
