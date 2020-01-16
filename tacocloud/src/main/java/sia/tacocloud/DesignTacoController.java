@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 
 //import tacos.Taco;
 //import sia.tacocloud.*;
@@ -23,7 +23,7 @@ import sia.tacocloud.Ingredient.Type;
 import sia.tacocloud.data.IngredientRepository;
 import sia.tacocloud.data.TacoRepository;
 
-@Slf4j
+//@Slf4j
 @Controller
 @RequestMapping("/design")
 @SessionAttributes("order")
