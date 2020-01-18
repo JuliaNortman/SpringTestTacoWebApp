@@ -33,26 +33,27 @@
 				</div>
 			</div>
 			<div class="ingredient-group" id="sauces">
-      <h3>Select your sauce:</h3>
-      <div th:each="ingredient : ${sauce}">
-        <input name="ingredients" type="checkbox" th:value="${ingredient.id}" />
-        <span th:text="${ingredient.name}">INGREDIENT</span><br/>
-      </div>
-      </div>
-      </div>
-      
-      <div>
+				<h3>Select your sauce:</h3>
+				<div th:each="ingredient : ${sauce}">
+					<input name="ingredients" type="checkbox"
+						th:value="${ingredient.id}" /> <span th:text="${ingredient.name}">INGREDIENT</span><br />
+				</div>
+			</div>
+		</div>
+
+		<div>
 
 
-      <h3>Name your taco creation:</h3>
-      <input type="text" th:field="*{name}"/>
-      <span class="validationError"
-            th:if="${#fields.hasErrors('name')}" 
-            th:errors="*{name}">Name Error</span>
-      <br/>
-      
-      <button>Submit your taco</button>
-      </div>
-    </form>
-  </body>
+			<h3>Name your taco creation:</h3>
+			<input type="text" th:field="*{name}" /> <span
+				class="validationError" th:if="${#fields.hasErrors('name')}"
+				th:errors="*{name}">Name Error</span> <br />
+
+			<button>Submit your taco</button>
+		</div>
+	</form>
+	<form method="POST" th:action="@{/logout}">
+		<input type="submit" value="Logout" />
+	</form>
+</body>
 </html>
