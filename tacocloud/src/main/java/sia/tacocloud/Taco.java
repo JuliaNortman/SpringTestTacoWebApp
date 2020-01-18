@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
@@ -22,8 +24,8 @@ public class Taco {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	
-	@Column(name="created_at")
+
+	@Column(name = "created_at")
 	private Date createdAt;
 
 	@NotNull
@@ -31,6 +33,7 @@ public class Taco {
 	private String name;
 
 	@ManyToMany(targetEntity = Ingredient.class)
+	@JoinTable(joinColumns = { @JoinColumn(name = "taco") }, inverseJoinColumns = { @JoinColumn(name = "ingredient") })
 	@NotNull
 	@Size(min = 1, message = "You must choose at least 1 ingredient")
 	private List<Ingredient> ingredients;
